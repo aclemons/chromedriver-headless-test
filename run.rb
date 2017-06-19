@@ -15,7 +15,7 @@ at_exit do
 end
 
 chrome_options = { args: %w(--headless --disable-gpu window-size=1200x800) }
-chrome_options[:binary] = '/usr/bin/google-chrome-beta'
+#chrome_options[:binary] = '/usr/bin/google-chrome-beta'
 
 capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(chrome_options: chrome_options)
 
@@ -25,4 +25,11 @@ capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(chrome_options: 
 @driver.find_element(:link_text, 'New Tab').click
 
 @driver.switch_to.window(@driver.window_handles.last)
-@driver.save_screenshot("tmp/#{Time.now.to_i}.png")
+
+unless @driver.page_source.include?('LWN')
+  STDERR.puts "ERROR: Did not see LWN on the new tab"
+  abort
+end
+
+# this will timeout
+# @driver.save_screenshot("tmp/#{Time.now.to_i}.png")
