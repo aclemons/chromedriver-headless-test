@@ -14,7 +14,10 @@ at_exit do
   @headless.destroy if @headless
 end
 
-capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(chrome_options: { args: %w(--headless --disable-gpu window-size=1200x800), binary: '/usr/bin/chromium' }) # /usr/bin/google-chrome-beta
+chrome_options = { args: %w(--headless --disable-gpu window-size=1200x800) }
+chrome_options[:binary] = '/usr/bin/google-chrome-beta'
+
+capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(chrome_options: chrome_options)
 
 @driver = Selenium::WebDriver.for(:chrome, desired_capabilities: capabilities, driver_opts: { args: %w(--verbose --log-path=tmp/chromedriver.log) })
 
