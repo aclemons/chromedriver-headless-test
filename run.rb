@@ -15,7 +15,7 @@ at_exit do
 end
 
 chrome_options = { args: %w(--headless --disable-gpu window-size=1200x800) }
-#chrome_options[:binary] = '/usr/bin/google-chrome-beta'
+# chrome_options[:binary] = '/usr/bin/google-chrome-beta'
 
 capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(chrome_options: chrome_options)
 
@@ -26,7 +26,8 @@ capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(chrome_options: 
 
 @driver.switch_to.window(@driver.window_handles.last)
 
-unless @driver.page_source.include?('LWN')
+# this passes with not using --headless mode
+unless @driver.first(:tag_name => 'body').text.include?('LWN')
   STDERR.puts "ERROR: Did not see LWN on the new tab"
   abort
 end
